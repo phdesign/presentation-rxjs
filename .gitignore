@@ -1,0 +1,14 @@
+# User settings and temp folders
+.tmp
+.idea
+*.iml
+.vscode
+
+# Local dependecies
+node_modules
+
+# Generated files and folders
+release
+dist
+npm-debug.log*
+.DS_Store

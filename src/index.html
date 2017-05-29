@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <title>Everything’s a stream. An introduction to RxJS and avoiding anti-patterns</title>
+        <% if (htmlWebpackPlugin.options.env === 'release') { %>
+        <link href="http://fonts.googleapis.com/css?family=Voltaire|Open+Sans:300,400,600" rel="stylesheet" type="text/css">
+        <% } %>
+    </head>
+    <body>
+        <article>
+             <section class="borderless">
+                <span class="fa-stack">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-rocket fa-stack-1x fa-inverse"></i>
+                </span>
+                <h1 class="vintage">Going Serverless:</h1>
+                <h3>Code Without Infrastructure</h3>
+            </section>
+            <section>
+                <ol class="align-left">
+                    <li>What is Serverless?</li>
+                    <li>Why Serverless?</li>
+                    <li>The Serverless ecosystem</li>
+                    <li>Serverless challenges</li>
+                </ol>
+            </section>
+            <section class="borderless" data-bespoke-state="">
+                <div class="me profile-pic"></div>
+                <p>@pheasley</p>
+                <img src="images/pageup-big.png" alt="PageUp Logo" class="pageup-logo">
+            </section>
+            <section data-bespoke-state="invert">
+                <span class="chapter-number"><span>1</span></span>
+                <h2>What is Serverless?</h2>
+            </section>
+            <section class="borderless">
+                <blockquote>
+                    [Code that] is run in stateless compute containers that are event-triggered, ephemeral (may only last for one invocation), and fully managed by a 3rd party. 
+                    <span class="attribution">- ThoughtWorks</span>
+                </blockquote>
+            </section>
+            <section>
+                <h3>Stateless compute containers</h3>
+            </section>
+            <section>
+                <h3>Event triggered</h3>
+            </section>
+            <section>
+                <h3>Ephemeral</h3>
+            </section>
+            <section>
+                <h3>Fully managed<br/> by a 3rd party</h3>
+            </section>
+            <section>
+                <h3>Not restricted to a single function</h3>
+            </section>
+            <section class="borderless">
+                <blockquote>
+                    Serverless architecture is such a silly name. Of course there are servers, just not ones you need to watch and micromanage all the time
+                    <span class="attribution">- @VilleImmonen</span>
+                </blockquote>
+            </section>
+            <section data-bespoke-state="invert">
+                <span class="fa-stack">
+                  <i class="fa fa-square fa-stack-2x"></i>
+                  <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
+                </span>
+                <h2>Demo</h2>
+            </section>
+            <section data-bespoke-state="invert">
+                <span class="chapter-number"><span>2</span></span>
+                <h2>Why Serverless?</h2>
+            </section>
+            <section>
+                <h3>Pay per invocation</h3>
+            </section>
+            <section>
+                <p>3 million requests</p>
+                <p>Runs for 1 sec</p>
+                <p>Allocated 512MB memory</p>
+                <p>= $18.34 per month</p>
+                <p></p>
+            </section>
+            <section>
+                <h3>Managed scaling</h3>
+            </section>
+            <section>
+                <h3>Isolated deployments</h3>
+            </section>
+            <section>
+                <h3>Time to market</h3>
+            </section>
+            <section>
+                <h3>A short history of Cloud computing</h3>
+            </section>
+            <section>
+                <h3>Bare metal servers</h3>
+            </section>
+            <section>
+                <h3>Virtualisation</h3>
+            </section>
+            <section>
+                <h3>
+                    Pet servers
+                    <div class="strikeout no-transform"><span class="lower">vs.</span></div>
+                    Cattle servers
+                </h3>
+            </section>
+            <section>
+                <h3>Hosted virtualisation</h3>
+                <p>Infrastructure as a Service (IaaS)</p>
+            </section>
+            <section>
+                <h3>Hosted environments</h3>
+                <p>Platform as a Service (PaaS)</p>
+            </section>
+            <section>
+                <h3>Serverless functions</h3>
+                <p>Functions as a Service (FaaS)</p>
+            </section>
+            <section>
+                <h3>Serverless Microservices</h3>
+                <h5>For the win!</h5>
+            </section>
+            <section data-bespoke-state="invert">
+                <span class="chapter-number"><span>3</span></span>
+                <h2>The Serverless ecosystem</h2>
+            </section>
+            <section>
+                <h3>Serverless Providers</h3>
+                <ul>
+                    <li>Amazon AWS Lambda</li>
+                    <li><a href="https://azure.microsoft.com/en-us/services/functions/">Microsoft Azure Functions</a></li>
+                    <li><a href="https://cloud.google.com/functions/">Google Cloud Functions</a></li>
+                    <li><a href="https://developer.ibm.com/openwhisk/">IBM OpenWhisk</a></li>
+                    <li><a href="http://iron.io/">Iron.io</a></li>
+                    <li><a href="https://webtask.io/">Webtask</a></li>
+                </ul>
+            </section>
+            <section>
+                <!-- Could use langauge logos -->
+                <h3>AWS Lambda</h3>
+                <ul>
+                    <li>Node.js (JavaScript)</li>
+                    <li>Python</li>
+                    <li>Java</li>
+                    <li>C#</li>
+                </ul>
+            </section>
+            <section>
+            <ul>
+                <h3>Microsoft Azure Functions</h3>
+                <li>Node.js (JavaScript)</li>
+                <li>C#</li>
+                <li>F#</li>
+                <li>Python</li>
+                <li>PHP</li>
+                <li>Bash</li>
+                <li>Batch</li>
+                <li>PowerShell</li>
+            </ul>
+            </section>
+            <section>
+                <h3>Google Cloud Functions</h3>
+                <ul>
+                    <li>Node.js (JavaScript)</li>
+                </ul>
+            </section>
+            <section>
+                <h3>AWS Lambda Event Triggers</h3>
+                <ul>
+                    <li>API Gateway</li>
+                    <li>S3</li>
+                    <li>Kinesis</li>
+                    <li>SNS</li>
+                    <li>DynamoDB</li>
+                    <li>CloudWatch and more...</li>
+                </ul>
+            </section>
+            <section class="borderless">
+                <img src="images/serverless_logo_fire.gif" alt="Serverless Framework">
+            </section>
+            <section data-bespoke-state="invert">
+                <span class="fa-stack">
+                  <i class="fa fa-square fa-stack-2x"></i>
+                  <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
+                </span>
+                <h2>Demo</h2>
+            </section>
+            <section data-bespoke-state="invert">
+                <span class="chapter-number"><span>4</span></span>
+                <h2>Serverless challenges</h2>
+            </section>
+            <section>
+                <h3>Maturity</h3>
+            </section>
+            <section>
+                <h3>Execution duration</h3>
+            </section>
+            <section>
+                <h3>Startup time</h3>
+            </section>
+            <section>
+                <h3>Authentication</h3>
+            </section>
+            <section>
+                <h3>Dev / integration testing</h3>
+            </section>
+            <section>
+                <h3>Statelessness</h3>
+            </section>
+            <section data-bespoke-state="invert">
+                <h2>Recap</h2>
+                <ul>
+                    <li>Quickly build and deploy new products</li>
+                    <li>Focus on code not infrastructure</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Thanks.</h2>
+                <div class="footnote">
+                    <p><i class="fa fa-twitter"></i> <a href="https://twitter.com/pheasley">@pheasley</a></p>
+                    <p><i class="fa fa-globe"></i> <a href="http://phdesign.com.au/presentation-serverless">phdesign.com.au/presentation-serverless</a></p>
+                </div>
+            </section>
+        </article>
+
+    </body>
+</html>
