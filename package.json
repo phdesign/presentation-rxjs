@@ -4,7 +4,7 @@
   "description": "Everything’s a stream. An introduction to RxJS and avoiding anti-patterns",
   "main": "src/scripts/index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack",
     "start": "webpack-dev-server --inline --hot",
     "deploy": "npm run build && gh-pages -d dist"
   },
