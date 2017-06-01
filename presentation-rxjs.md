@@ -13,6 +13,12 @@ To reactive extensions, everything's a stream. RxJS simplifies concurrent and as
 * Pushing vs. Pulling Data
 * Useful in JavaScript in UI events or back-end communication
 
+
+
+DDD by Night: 10 Min
+
+Web Directions Code: 20 Min
+
 ## Content
 
 RxJS is the JavaScript implementation of Reactive Extensions, or ReactiveX. Reactive extensions are something that have come out of the Microsoft's lab, but despite that they are powerful and popular and are gaining traction within the Angular and React communities. RxJS provides a way to manage asynchronous and event-based sources through the transformation of streams (called Observables).
@@ -58,4 +64,68 @@ var source = Rx.Observable.create(function (observer) {
 });
 ```
 
-However there is rarely ever a need to use such verbose code as RxJS provides extensions to easily create Observables from a number of sources.
+However there is rarely ever a need to use such verbose code as RxJS provides extensions to easily create Observables from a number of sources. For example, we can create an Observable from a JavaScript event using the fromEvent factory
+
+```
+var result = document.getElementById('result');
+
+var source = Rx.Observable.fromEvent(document, 'mousemove');
+
+var subscription = source.subscribe(function (e) {
+  result.innerHTML = e.clientX + ', ' + e.clientY;
+});
+```
+
+RxJS is also aware of common frameworks like jQuery, Zepto.js, AngularJS, Ember.js and Backbone.js and can create Observables from their event handlers, like this jQuery example
+
+```
+var $result = $('#result');
+var $sources = $('div');
+
+var source = Rx.Observable.fromEvent($sources, 'click');
+
+var subscription = source.subscribe(function (e) {
+  $result.html(e.clientX + ', ' + e.clientY);
+});
+```
+
+**Promises are first class citizens**
+
+The majority of RxJS can used Promises and observables interchangeably, for example 
+
+```
+var source = Rx.Observable.range(0, 3)
+  .flatMap(function (x) { return Promise.resolve(x * x); });
+
+var subscription = source.subscribe(
+  function (x) { console.log('onNext: %s', x); },
+  function (e) { console.log('onError: %s', e); },
+  function () { console.log('onCompleted'); });
+```
+
+Alternatively we can create an Observable from a Promise
+
+```
+var source1 = Rx.Observable.fromPromise(promise1);
+
+var subscription1 = source1.subscribe(
+  function (x) { console.log('onNext: %s', x); },
+  function (e) { console.log('onError: %s', e); },
+  function () { console.log('onCompleted'); });
+```
+
+Or we can convert the other way from an Observable to a Promise
+
+```
+var source1 = Rx.Observable.just(1).toPromise();
+
+source1.then(
+  function (value) {
+    console.log('Resolved value: %s', value);
+  },
+  function (reason) {
+    console.log('Rejected reason: %s', reason);
+  });
+
+```
+
