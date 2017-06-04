@@ -43,7 +43,7 @@ getDataFromNetwork()
 
 **Push vs. Pull**
 
-From the cover there seems to be no difference, the important difference comes in how the items are processed. In normal imperative programming our code will execute the forEach callback for every item in source, blocking while it processes the item and calling next when done to get the next item. In the reactive programming style of RxJS we setup Observers to be called every time a new item arrives from the source, it's a push model rather than a pull model. Reactive extensions takes reactive programming and adds a bunch of helper methods to make it easy to work with.
+From the cover there seems to be no difference, the important difference comes in how the items are processed. In normal imperative programming our code will execute the forEach callback for every item in source, blocking while it processes the item and calling next when done to get the next item. In the reactive programming style of RxJS we setup Observers to be called every time a new item arrives from the source, it's a push model rather than a pull model. 
 
 **Observable + Operations + Observer + Scheduler = RxJS**
 
@@ -52,55 +52,99 @@ The basic concepts of RxJS can be summed up as "An Observable is transformed by 
 An Observable is an RxJS stream of messages, and a simple Observable looks like this
 
 ```
-var source = Rx.Observable.create(function (observer) {
-  // Yield a single value and complete
-  observer.onNext(42);
-  observer.onCompleted();
+var observable = Rx.Observable.create(function (observer) {
+  observer.next(1);
+  observer.next(2);
+});
+```
 
-  // Any cleanup logic might go here
-  return function () {
-    console.log('disposed');
+Which produces two values, 1 and 2. To act on this Observable you subscribe to receive it's values
+
+```
+var observable = Rx.Observable.create(function (observer) {
+  observer.next(1);
+  observer.next(2);
+});
+observable.subscribe(x => console.log(x));
+
+// Output:
+// 1
+// 2
+```
+
+The Observable can also notify the subscriber that it's complete
+
+```
+var observable = Rx.Observable.create(function (observer) {
+  observer.next(1);
+  observer.next(2);
+  observer.complete();
+});
+observable.subscribe(
+  x => console.log("next -> " + x),
+  x => console.log("complete"));
+
+// Output:
+// next -> 1
+// next -> 2
+// complete
+```
+
+And it's good practice to capture any exceptions and deliver an error notification to the subscriber
+
+```
+var observable = Rx.Observable.create(function (observer) {
+  try {
+    observer.next(1);
+    observer.next(2);
+    throw new Error("bang!")
+    observer.complete();
+  } catch (err) {
+    observer.error(err);
   }
 });
+observable.subscribe(
+  x => console.log("next -> " + x),
+  x => console.log("complete"),
+  x => console.log("error -> " + x);
+
+// Output:
+// next -> 42
+// next -> 36
+// error -> bang!
 ```
 
-However there is rarely ever a need to use such verbose code as RxJS provides extensions to easily create Observables from a number of sources. For example, we can create an Observable from a JavaScript event using the fromEvent factory
+However there is rarely ever a need to use such verbose code for creating an Observable, as RxJS provides extensions to easily create Observables from a number of sources. For example, we can create an Observable from a JavaScript event using the fromEvent factory
 
 ```
-var result = document.getElementById('result');
+var observable = Rx.Observable.fromEvent(document, 'mousemove');
 
-var source = Rx.Observable.fromEvent(document, 'mousemove');
-
-var subscription = source.subscribe(function (e) {
-  result.innerHTML = e.clientX + ', ' + e.clientY;
-});
+observable.subscribe(e => console.log(e.clientX + ', ' + e.clientY));
 ```
 
 RxJS is also aware of common frameworks like jQuery, Zepto.js, AngularJS, Ember.js and Backbone.js and can create Observables from their event handlers, like this jQuery example
 
 ```
-var $result = $('#result');
 var $sources = $('div');
+var observable = Rx.Observable.fromEvent($sources, 'click');
 
-var source = Rx.Observable.fromEvent($sources, 'click');
-
-var subscription = source.subscribe(function (e) {
-  $result.html(e.clientX + ', ' + e.clientY);
-});
+observable.subscribe(e => console.log(e.clientX + ', ' + e.clientY));
 ```
+
+// TODO: Create from list, interval & range
 
 **Promises are first class citizens**
 
-The majority of RxJS can used Promises and observables interchangeably, for example 
+The majority of RxJS can use Promises and observables interchangeably, for example 
 
 ```
 var source = Rx.Observable.range(0, 3)
   .flatMap(function (x) { return Promise.resolve(x * x); });
 
 var subscription = source.subscribe(
-  function (x) { console.log('onNext: %s', x); },
-  function (e) { console.log('onError: %s', e); },
-  function () { console.log('onCompleted'); });
+  function (x) { console.log('next: %s', x); },
+  function (e) { console.log('error: %s', e); },
+  function () { console.log('completed'); });
 ```
 
 Alternatively we can create an Observable from a Promise
@@ -109,9 +153,9 @@ Alternatively we can create an Observable from a Promise
 var source1 = Rx.Observable.fromPromise(promise1);
 
 var subscription1 = source1.subscribe(
-  function (x) { console.log('onNext: %s', x); },
-  function (e) { console.log('onError: %s', e); },
-  function () { console.log('onCompleted'); });
+  function (x) { console.log('next: %s', x); },
+  function (e) { console.log('error: %s', e); },
+  function () { console.log('completed'); });
 ```
 
 Or we can convert the other way from an Observable to a Promise
