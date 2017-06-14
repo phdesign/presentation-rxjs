@@ -1,6 +1,7 @@
 require('raw!../index.html'); // Dummy import to make webpack watch for html changes
 
 import 'styles/style.less';
+import 'highlight.js/styles/default.css';
 require.context('../images', true, /\.(png|jpg|gif)$/);
 import bespoke from 'bespoke';
 import classes from 'bespoke-classes';
@@ -12,6 +13,9 @@ import progress from 'bespoke-progress';
 import state from 'bespoke-state';
 import touch from 'bespoke-touch';
 import logikeys from './logikeys';
+import hljs from 'highlight.js';
+
+hljs.initHighlightingOnLoad();
 
 const isIE = /(MSIE |Trident.*rv[ :])([0-9]+)/.test(navigator.userAgent);
 bespoke.from('article', [

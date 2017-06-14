@@ -4,6 +4,10 @@ let path = require('path');
 let webpack = require('webpack');
 let CleanWebpackPlugin = require('clean-webpack-plugin');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
+var _ = require('lodash');
+
+// Disables ES6 template literals from lodash templates: https://github.com/lodash/lodash/issues/399
+_.templateSettings.interpolate = /<%=([\s\S]+?)%>/g;
 
 module.exports = {
   entry: {
@@ -81,7 +85,7 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new webpack.optimize.DedupePlugin(),
     new HtmlWebpackPlugin({
-      template: 'src/index.html',
+      template: './src/index.html',
       env: process.env.NODE_ENV
     }),
     //new webpack.optimize.UglifyJsPlugin()

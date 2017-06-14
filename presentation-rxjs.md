@@ -6,22 +6,23 @@ To reactive extensions, everything's a stream. RxJS simplifies concurrent and as
 
 ## Outline
 
-* Observables + Operators + Schedulers.
-* Does it replace Promises?
-* Hot vs. cold observables
-* Marble diagrams
-* Pushing vs. Pulling Data
-* Useful in JavaScript in UI events or back-end communication
+* Introduction
+* Push vs. Pull
+* Observable
+* Subscribe
+* Operators
+* Multicasting
+* Promises
+* Schedulers
+* Anti-patterns
 
 
 
 DDD by Night: 10 Min
 
-Web Directions Code: 20 Min
-
 ## Content
 
-RxJS is the JavaScript implementation of Reactive Extensions, or ReactiveX. Reactive extensions are something that have come out of the Microsoft's lab, but despite that they are powerful and popular and are gaining traction within the Angular and React communities. RxJS provides a way to manage asynchronous and event-based sources through the transformation of streams (called Observables).
+RxJS is the JavaScript implementation of Reactive Extensions which provide a way to manage asynchronous and event-based sources through the transformation of streams (called Observables). 
 
 If you've worked with iterable functions like map reduce, then you already know the syntax. Take for example this ES6 code
 
@@ -131,7 +132,149 @@ var observable = Rx.Observable.fromEvent($sources, 'click');
 observable.subscribe(e => console.log(e.clientX + ', ' + e.clientY));
 ```
 
-// TODO: Create from list, interval & range
+There's a few more helpful creation extensions, like Interval which generates sequential numbers at a specified interval of time
+
+```
+var observable = Rx.Observable.interval(1000); // Every 1000ms
+
+observable.subscribe(x => console.log(new Date().toTimeString() + ': ' + x));
+
+// Output:
+// 17:36:24 GMT+1000 (AEST): 1
+// 17:36:25 GMT+1000 (AEST): 2
+// 17:36:26 GMT+1000 (AEST): 3
+// ...
+```
+
+Or range which emits a sequence of numbers within a specified range
+
+```
+var observable = Rx.Observable.range(1, 3);
+
+observable.subscribe(x => console.log(x));
+
+// Output:
+// 1
+// 2
+// 3
+```
+
+Or the Swiss Army knife of Observable creations, from, which can accept an Array, an array-like object, a Promise, an iterable object, or an Observable-like object
+
+```
+var observable = Rx.Observable.from(['a', 'b', 'c']);
+
+observable.subscribe(x => console.log(x));
+
+// Output:
+// a
+// b
+// c
+```
+
+**Subscribing to an Observable**
+
+Subscribing to an Observable executes its evaluation, its like calling a function. In a typical function call we have a block of code that when we call, will evaluate and return a result.
+
+```
+function foo() {
+  return Math.floor(Math.random() * 100);
+}
+
+var x = foo();
+console.log(x);
+var y = foo();
+console.log(y);
+
+// Output:
+// 25
+// 98
+```
+
+Well an Observable is very similar, we provide it with a function that will be lazy evaluated every time it is subscribed to
+
+```
+var foo = Rx.Observable.create(function (observer) {
+  return Math.floor(Math.random() * 100);
+});
+
+foo.subscribe(function (x) {
+  console.log(x);
+});
+foo.subscribe(function (y) {
+  console.log(y);
+});
+
+// Output:
+// 77
+// 23
+```
+
+It's important to realise that an Observable is not an implementation of the Observable pattern, every subscriber causes a new value to be received, the Observable does not maintain a list of attached Observers. However it is possible to multicast an Observable to make it send the same value to all subscribers, we'll cover this a bit later. The difference between a function call and an Observable is that an Observable can emit multiple values, whereas a function can only emit a single value, unless it's a generator function like this
+
+```
+function* foo() {
+  yield 1;
+  yield 2;
+}
+
+for (var val of foo()) {
+  console.log(val);
+}
+
+// Output:
+// 1
+// 2
+```
+
+The difference between a generator function and an Observable is that a generator function has its value pulled by the consumer, whereas an Observable pushes it's value to the consumer by calling the subscribe callback whenever a new value is ready.
+
+**Operators**
+
+Operators are the special sauce on top of Observables, they allow you to manipulate the Observable stream using chainable operators like map reduce functions. Operators never change the Observable instance but create a new Observable with the same behaviour has the last and manipulate that. Some common operators include map and filter (for you C#er's out there think SELECT, WHERE)
+
+```
+var observable = Rx.Observable.fromEvent(document, 'mousemove');
+
+observable
+  .map(e => e.clientX)
+  .filter(x => x % 2 == 0)
+  .subscribe(x => console.log(x));
+```
+
+one of the most commonly used operators is flatMap (also known as selectMany) which allows you to map values to generate new observables and then flatten those observables (using merge) into a single
+
+```
+var observable = Rx.Observable.range(0, 5);
+
+observable
+  .flatMap(x => Rx.Observable.range(0, x))
+  .subscribe(x => console.log(x));
+  
+// Output
+```
+
+
+
+merge
+
+scan
+
+combine
+
+zip
+
+last
+
+do
+
+**Multicasting**
+
+
+
+
+
+
 
 **Promises are first class citizens**
 
@@ -173,3 +316,8 @@ source1.then(
 
 ```
 
+**Schedulers**
+
+**Common anti patterns**
+
+Instead of subscribing multiple times to an iterator and evaluating the iterator multiple times, use publish and connect to evaluate it only once.

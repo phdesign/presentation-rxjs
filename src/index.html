@@ -10,22 +10,27 @@
     </head>
     <body>
         <article>
-             <section class="borderless">
-                <span class="fa-stack">
-                  <i class="fa fa-circle fa-stack-2x"></i>
-                  <i class="fa fa-rocket fa-stack-1x fa-inverse"></i>
-                </span>
-                <h1 class="vintage">Everything’s a stream.</h1>
+             <section>
+                <h1>Everything’s a stream.</h1>
                 <h3>An introduction to RxJS and avoiding anti-patterns</h3>
             </section>
-            <section class="borderless" data-bespoke-state="">
+            <section>
                 <div class="me profile-pic"></div>
                 <p>@pheasley</p>
                 <img src="images/pageup-big.png" alt="PageUp Logo" class="pageup-logo">
             </section>
-            <section data-bespoke-state="invert">
-                <span class="chapter-number"><span>1</span></span>
+            <section>
                 <h2>What is RxJS?</h2>
+            </section>
+            <section>
+                <pre>
+                    <code>
+getDataFromNetwork()
+  .filter(s => s != null)
+  .map(s => s + 'transformed')
+  .forEach(s => console.log(`next => ${s}`))
+                    </code>
+                </pre>
             </section>
             <section>
                 <h3>Push vs. Pull</h3>
