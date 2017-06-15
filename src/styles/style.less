@@ -161,13 +161,14 @@ article {
 // prism styles
 
 pre {
-  font-size: (@font_size_base * 0.6);
+  overflow: visible;
   border-radius: 12px;
   border: none !important;
   box-shadow: none !important;
-  span {
-    text-shadow: none !important;
-  }
+}
+code,
+pre {
+  font-size: (@font_size_base * 0.6) !important;
 }
 
 // content styles

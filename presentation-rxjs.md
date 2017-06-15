@@ -321,3 +321,35 @@ source1.then(
 **Common anti patterns**
 
 Instead of subscribing multiple times to an iterator and evaluating the iterator multiple times, use publish and connect to evaluate it only once.
+
+Event emitters vs. Reactive Extensions
+
+
+
+## Take2
+
+Reactive Extensions provide a way to manage streams of events and are available in almost every modern programming language, as well as spawning an MVVM framework for Xamarin and WPF. In this talk I'll focus on the JavaScript flavour of reactive extensions called RxJS which is gaining popularity especially with the Angular 2+ community. 
+
+Reactive extensions are going to look very familiar to anyone who has used C# LINQ statements, which isn't a surprise as they originated out of Microsoft, but they should also be familiar to anyone whose used underscore / loads style map reduce functions in JavaScript. Here's an example of plain ES6 array manipulators
+
+```
+getDataFromNetwork()
+  .filter(s => s != null)
+  .map(s => s + 'transformed')
+  .forEach(s => console.log(`next => ${s}`))
+```
+
+And very similar looking reactive extensions code
+
+```
+getDataFromNetwork()
+  .filter(s => s != null)
+  .map(s => s + 'transformed')
+  .subscribe(s => console.log(`next => ${s}`))
+```
+
+On the surface they look very similar, but under the hood there's quite a difference going on. Typical iterators, arrays and lists work on a pull model, the consumer controls the flow by instantiating the iterator and calling next to receive the next item when it's ready to process it. Reactive extensions use a push model where the consumer subscribes to the Observable which pushes items to the consumer as soon as they are ready, in a way similar to promises where we configure a chain of operators that will manipulate the future result when it's available. Reactive extensions advertise themselves as the missing space in this matrix:
+
+<pull vs push matrix>
+
+The anatomy of a reactive extension looks like this, first we create an Observable from some sort of event emitter or list, we then manipulate the events and finally we subscribe an Observer to receive and do something with the events.
