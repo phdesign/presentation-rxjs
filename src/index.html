@@ -22,19 +22,29 @@
             <section>
                 <h2>What is RxJS?</h2>
             </section>
-            <section>
-                <h3>ES6</h3>
-                <pre>
-                    <code class="language-javascript">
-getDataFromNetwork()
+            <section data-bespoke-state="bipolar">
+                <div class="col align-right">
+                    <h3>ES6</h3>
+                </div>
+                <div class="col align-left">
+                    <pre><code class="language-javascript">getDataFromNetwork()
   .filter(s => s != null)
   .map(s => s + 'transformed')
-  .forEach(s => console.log(`next => ${s}`))</code>
-                </pre>
+  .forEach(s => console.log(`next => ${s}`))</code></pre>
+                </div>
+                <div class="col align-right">
+                    <h3>ES6</h3>
+                </div>
+                <div class="col align-left">
+                    <pre><code class="language-javascript">getDataFromNetwork()
+  .filter(s => s != null)
+  .map(s => s + 'transformed')
+  .forEach(s => console.log(`next => ${s}`))</code></pre>
+                </div>
             </section>
             <section>
                 <h3>RxJS</h3>
-                <pre data-line="3" class="line-numbers">
+                <pre data-line="3">
                     <code class="language-javascript">
 getDataFromNetwork()
   .filter(s => s != null)

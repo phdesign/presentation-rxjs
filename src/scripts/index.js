@@ -15,10 +15,8 @@ import logikeys from './logikeys';
 import Prism from 'prismjs';
 import 'prismjs/plugins/line-highlight/prism-line-highlight';
 import 'prismjs/plugins/line-highlight/prism-line-highlight.css';
-import 'prismjs/plugins/line-numbers/prism-line-numbers';
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
-//import 'prism-themes/themes/prism-hopscotch.css';
-import 'prismjs/themes/prism.css';
+import 'prism-themes/themes/prism-hopscotch.css';
+//import 'prismjs/themes/prism.css';
 
 Prism.highlightAll();
 

@@ -7,14 +7,14 @@
 @color_paper: #e0d2bf;
 @color_paper_inverse: #4f4e49;
 
-@font_size_base: 50px;
+@font_size_base: 42px;
 @font_color: @color_dark_grey;
 @font_family_sans_serif: "Open Sans", helvetica, arial, sans-serif;
 @font_family_fancy: "Open Sans", helvetica, arial, sans-serif;
 @link_color: @color_dark_grey;
 
 @slide_width: 1200px;
-@slide_height: 900px;
+@slide_height: 700px;
 
 // base
 
@@ -258,6 +258,9 @@ b {
 .align-left {
   text-align: left;
 }
+.align-right {
+  text-align: right;
+}
 .underline {
   border-bottom: 1px solid #333;
 }
@@ -400,3 +403,25 @@ b {
     &:extend(.invert .fa-inverse);
   }
 }
+.bipolar {
+  .bespoke-slide {
+    flex-flow: row wrap;
+  }
+  .col {
+    flex: 50%;
+  }
+  pre[class*="language-"],
+  code[class*="language-"] {
+    background: none;
+    font-size: (@font_size_base * 0.4) !important;
+  }
+  &:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    background: #322931;
+    width: 50%;
+    height: 100%;
+  }
+}
+
